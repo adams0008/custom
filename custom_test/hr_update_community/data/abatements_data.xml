@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data noupdate="1">
+        <record id="abat_normal" model="res.abatement">
+			<field name="name">Abatement normal</field>
+			<field name="code">NORM</field>
+			<field name="taux">20</field>
+		</record>
+        <record id="abat_pension" model="res.abatement">
+			<field name="name">Abatement pension</field>
+			<field name="code">PEN</field>
+			<field name="taux">25</field>
+		</record>
+        <record id="abat_rente_1" model="res.abatement">
+			<field name="name">Abatement Rentes viagères 1</field>
+			<field name="code">RENT1</field>
+			<field name="taux">40</field>
+            <field name="description">Montant compris entre 100 000 et 300 000 F CFA par mois</field>
+		</record>
+        <record id="abat_rente_2" model="res.abatement">
+			<field name="name">Abatement Rentes viagères 2</field>
+			<field name="code">RENT2</field>
+			<field name="taux">25</field>
+            <field name="description">Montant égal ou supérieur à 300 000 F CFA par mois</field>
+		</record>
+    </data>
+</openerp>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data noupdate="1">
+        <record id="stagiaire" model="hr.contract.category">
+			<field name="name">Stagiaires</field>
+			<field name="code">S</field>
+            <field name="sequence">0</field>
+		</record>
+
+        <record id="ouvrier" model="hr.contract.category">
+			<field name="name">Ouvriers et employés</field>
+			<field name="code">O</field>
+            <field name="sequence">0</field>
+		</record>
+
+        <record id="agent" model="hr.contract.category">
+			<field name="name">Agents de maîtrise, techniciens et assimilés</field>
+			<field name="code">A</field>
+            <field name="sequence">0</field>
+		</record>
+
+        <record id="ingenieur" model="hr.contract.category">
+			<field name="name">Ingénieurs, cadres et assimilés</field>
+			<field name="code">I</field>
+            <field name="sequence">0</field>
+		</record>
+        <record id="cadre" model="hr.contract.category">
+			<field name="name">Cadres Supérieurs</field>
+			<field name="code">C</field>
+            <field name="sequence">0</field>
+		</record>
+
+    </data>
+</openerp>

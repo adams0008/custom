@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data noupdate="1">
+        <record id="journalier_1" model="hr.categorie.salaire">
+			<field name="name">Horaires, journaliers et occasionnels inférieurs ou égaux à
+3231 F par jour</field>
+			<field name="code">J1</field>
+            <field name="sequence">0</field>
+		</record>
+
+        <record id="journalier_2" model="hr.categorie.salaire">
+			<field name="name">Horaires, journaliers et occasionnels supérieurs ou égaux à
+3231 F par jour</field>
+			<field name="code">J2</field>
+            <field name="sequence">1</field>
+		</record>
+
+        <record id="agent" model="hr.categorie.salaire">
+			<field name="name">Mensuels inférieurs ou égaux à 70.000 F par mois</field>
+			<field name="code">M1</field>
+            <field name="sequence">2</field>
+		</record>
+
+        <record id="ingenieur" model="hr.categorie.salaire">
+			<field name="name">Mensuels supérieurs à 70.000 F par mois et inférieurs ou
+égaux à 1.647.315 F par mois</field>
+			<field name="code">M2</field>
+            <field name="sequence">3</field>
+		</record>
+        <record id="cadre" model="hr.categorie.salaire">
+			<field name="name">Mensuels supérieurs à 1.647.315 F par mois</field>
+			<field name="code">M3</field>
+            <field name="sequence">4</field>
+		</record>
+
+    </data>
+</openerp>

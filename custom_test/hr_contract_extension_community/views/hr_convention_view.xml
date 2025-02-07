@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <menuitem id="hr_contract_extension_community_menu_id" name="Extensions du Contrat" parent="hr.menu_human_resources_configuration" groups="hr.group_hr_manager" />
+    <!-- les convetions -->
+    <record model="ir.ui.view" id="hr_convention_tree_view">
+      <field name="name">hr.convention.tree</field>
+      <field name="model">hr.convention</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Conventions">
+          <field name="name" />
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="hr_convention_form_view">
+      <field name="name">hr.convention.form</field>
+      <field name="model">hr.convention</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Conventions">
+          <sheet>
+            <group colspan="2">
+              <field name="name" />
+            </group>
+            <notebook>
+              <page string="Description">
+                <field name="description" />
+              </page>
+              <page string="Les Secteurs d'activtés">
+                <field name="secteurs_ids">
+                  <tree string="Secteurs d'activités">
+                    <field name="name" />
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="open_view_convention_tree" model="ir.actions.act_window">
+      <field name="name">Conventions</field>
+      <field name="res_model">hr.convention</field>
+      <field name="view_mode">form,tree</field>
+      <field name="view_id" ref="hr_convention_tree_view" />
+    </record>
+
+    <menuitem id="hr_convention_menu_id" name="Conventions" parent="hr_contract_extension_community_menu_id" groups="hr.group_hr_manager" action="open_view_convention_tree" />
+
+    <!-- les sections -->
+    <record model="ir.ui.view" id="hr_secteur_activite_tree_view">
+      <field name="name">hr.secteur.activite.tree</field>
+      <field name="model">hr.secteur.activite</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Secteurs">
+          <field name="name" />
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_secteur_activite_form_view">
+      <field name="name">hr.secteur.activite.form</field>
+      <field name="model">hr.secteur.activite</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Secteurs">
+          <sheet>
+            <group colspan="2">
+              <field name="name" />
+              <field name="hr_convention_id" />
+            </group>
+            <notebook>
+              <page string="Description">
+                <field name="description" />
+              </page>
+              <page string="Catégories d'employés">
+                <field name="category_employee_ids" />
+              </page>
+              <page string="categories">
+                <field name="salaire_ids">
+                  <tree editable="top">
+                    <field name='name' />
+                    <field name="salaire_base" />
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+
+
+    <record id="open_view_secteur_tree" model="ir.actions.act_window">
+      <field name="name">Secteurs</field>
+      <field name="res_model">hr.secteur.activite</field>
+      <field name="view_mode">form,tree</field>
+      <field name="view_id" ref="hr_secteur_activite_tree_view" />
+    </record>
+
+    <menuitem id="hr_secteur_activite_menu_id" name="Secteurs" parent="hr_contract_extension_community_menu_id" action="open_view_secteur_tree" />
+
+    <!-- Catégories salariales -->
+    <record model="ir.ui.view" id="hr_categorie_salariale_tree_view">
+      <field name="name">hr.categorie.salariale.tree</field>
+      <field name="model">hr.categorie.salariale</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree string="Catégorie Salariale" editable="top">
+          <field name="name" required="1" />
+          <field name="categorie_employee_id" />
+          <field name="hr_secteur_activite_id" required="0" />
+          <field name="salaire_base" required="1" />
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_categorie_salariale_form_view">
+      <field name="name">hr.categorie.salariale.form</field>
+      <field name="model">hr.categorie.salariale</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Catégories salariale">
+          <sheet>
+            <group colspan="4">
+              <field name="name" />
+              <field name="hr_secteur_activite_id" />
+              <field name="categorie_employee_id" />
+              <field name="salaire_base" />
+            </group>
+            <notebook>
+              <page string="Description">
+                <field name="description" placeholder="Description de la catégorie salariale" />
+              </page>
+            </notebook>
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_hr_categorie_salariale_tree_view">
+      <field name="name">Catégorie Salariale</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">hr.categorie.salariale</field>
+      <field name="view_mode">form,tree</field>
+      <field name="view_id" ref="hr_categorie_salariale_tree_view" />
+    </record>
+
+    <menuitem id="hr_categorie_salariale_menu" name="Catégories salariales" parent="hr_contract_extension_community_menu_id" action="action_hr_categorie_salariale_tree_view" />
+  </data>
+</odoo>

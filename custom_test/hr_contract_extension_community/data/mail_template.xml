@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <template id="end_contract_mail_template">
+            Bonjour M/Mme <t t-esc="name"/>,
+            <br/><br/>
+            Le contrat numero <t t-esc="numero_contrat"/> de l'employé <t t-esc="employee"/>  expirera exactement le <t t-esc="contract_date"/>
+            <br/>
+            Prière prendre les dispositions pour le traitement dudit contrat.
+            <br/><br/>
+            Cordialement !
+        </template>
+
+    </data>
+</odoo>

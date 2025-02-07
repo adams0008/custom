@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="res_company_update_form_view">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <field name="phone" position="before">
+                    <field name="parcelle" />
+                    <field name="mobile" />
+                </field>
+                <notebook position="inside">
+                    <page string="Configurations CNPS et IMPOTS" name="other_conif">
+                        <group >
+                            <group string="Informations IGR">
+                                <field name="max_age_child" />
+                            </group>
+                            <group string="CNPS">
+                                <field name="taux_accident_travail"/>
+                                <field name="taux_cnps_employee_local"/>
+                                <field name="taux_cnps_employe_expat"/>
+                                <field name="taux_cnps_employer"/>
+                                <field name="taux_prestation_familiale"/>
+                                <field name="taux_assurance_mater"/>
+                            </group>
+                            <group string="Impots">
+                                <field name="impot_service"/>
+                                <field name="taux_fdfp"/>
+                                <field name="taux_fdfp_fc"/>
+                            </group>
+                            <group>
+                                <field name="max_assiette_cnps" />
+                                <field name="max_assiette_autre_contribution" />
+                            </group>
+                        </group>
+                        <group string="Gestion des abatements" name="abatment">
+                            <field name="abatement_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="taux"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_hr_payslip_by_employees" model="ir.ui.view">
+        <field name="name">payroll_payslip_employees</field>
+        <field name="model">hr.payslip.employees</field>
+        <field name="arch" type="xml">
+            <form string="Payslips by Employees">
+                <group colspan="4">
+                    <separator string="Employees" colspan="4" />
+                    <newline />
+                    <field name="employee_ids" nolabel="1" colspan="4" />
+                </group>
+                <footer>
+                    <button
+                        string="Calculer"
+                        name="compute_sheet"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button string="Annuler" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_hr_payslip_by_employees" model="ir.actions.act_window">
+        <field name="name">Generate Payslips</field>
+        <field name="res_model">hr.payslip.employees</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hr_payslip_by_employees" />
+        <field name="target">new</field>
+    </record>
+</odoo>

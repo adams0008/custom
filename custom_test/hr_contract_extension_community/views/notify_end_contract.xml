@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <record id="notify_manager_tree_view" model="ir.ui.view">
+    <field name="name">notify.manager.tree</field>
+    <field name="model">notify.configuration</field>
+    <field name="arch" type="xml">
+      <tree string="Notification manager">
+        <field name="day_before" />
+        <field name="manager_id" />
+      </tree>
+    </field>
+  </record>
+  <record id="notify_manager_form_view" model="ir.ui.view">
+    <field name="name">notify.manager.form</field>
+    <field name="model">notify.configuration</field>
+    <field name="arch" type="xml">
+      <form string="Notification manager">
+        <sheet>
+          <group>
+            <field name="name" />
+          </group>
+          <group>
+            <group>
+              <field name="day_before" />
+              <field name="email_cc" widget="many2many_tags" />
+            </group>
+            <group>
+              <field name="manager_id" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="act_notify_manager_id" model="ir.actions.act_window">
+    <field name="name">Notification manager</field>
+    <field name="res_model">notify.configuration</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="notify_manager_tree_view" />
+  </record>
+  <menuitem id="menu_notify_manager_root" name="Notification fin contrat" parent="hr_contract_extension_community_menu_id" action="act_notify_manager_id" groups="hr.group_hr_manager" sequence="1" />
+</odoo>

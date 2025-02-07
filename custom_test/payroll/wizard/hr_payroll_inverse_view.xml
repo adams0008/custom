@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_payslip_ci_pyaroll_inverse_form_view">
+            <field name="name">hr.payroll.inverse.form</field>
+            <field name="model">hr.payroll.inverse</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Calcul inverse">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="type_calcul" />
+                            </group>
+                            <group>
+                                <field name="montant" />
+                            </group>
+                            <group>
+                                <field name="input_type"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="computeSlip" string="Calculer le bulletin" type="object" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_payroll_calcul_inverse_form_view">
+			<field name="name">Calcul inverse de la paie</field>
+			<field name="res_model">hr.payroll.inverse</field>
+			<field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

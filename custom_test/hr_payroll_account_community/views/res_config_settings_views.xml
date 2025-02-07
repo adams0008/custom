@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr.payroll.account</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='module_payroll_account_id']" position="after">
+                <setting string="Déplcer les ecritures comptables par lot de paie" 
+                    help="Activez cette option pour fusionner toutes les écritures comptables de la même période en une seule ligne de mouvement de compte. Cela rendra les écritures comptables anonymes, mais désactivera également les générations de paiements uniques.">
+                    <field name="batch_payroll_move_lines"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_company_form">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="batch_payroll_move_lines" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
+

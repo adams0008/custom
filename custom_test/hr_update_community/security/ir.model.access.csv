@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_contract_category_all,hr.contract.category all,model_hr_contract_category,base.group_user,1,1,1,1
+access_res_abatement,res.abatement all,model_res_abatement,base.group_user,1,1,1,1
+access_hr_visa,hr.visa,model_hr_visa,hr.group_hr_manager,1,1,1,1
+access_hr_carte_sejour,hr.carte.sejour,model_hr_carte_sejour,hr.group_hr_manager,1,1,1,1
+access_hr_personne_contacted,hr.personne.contacted,model_hr_personne_contacted,hr.group_hr_manager,1,1,1,1
+acces_hr_licence,hr.licence,model_hr_licence,hr.group_hr_manager,1,1,1,1
+access_hr_parent_employee,hr.parent.employe,model_hr_parent_employe,hr.group_hr_manager,1,1,1,1
+access_hr_employee_enfant,hr.employee.enfant,model_hr_employee_enfant,hr.group_hr_manager,1,1,1,1
+access_hr_employee_degree,hr.employee.degree,model_hr_employee_degree,hr.group_hr_manager,1,1,1,1

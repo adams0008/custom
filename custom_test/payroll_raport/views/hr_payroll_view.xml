@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_payroll_report_wizard" model="ir.ui.view">
+            <field name="name">payroll.report.wizard.form</field>
+            <field name="model">payroll.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Générer le livre de paie">
+                    <group>
+                        <field name="orientation"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                        <button string="Imprimer" type="object" name="print_payroll_report" class="btn-primary"/>
+                        <button name="payroll_book_report_excel" string="Imprimer en excel" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_payroll_report_wizard" model="ir.actions.act_window">
+            <field name="name">Générer le livre de paie</field>
+            <field name="res_model">payroll.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_payroll_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_payroll_analyse" 
+            name="Analyse"
+            parent="payroll.payroll_menu_root"/>
+
+        <menuitem id="menu_payroll_report_wizard" name="Générer le livre de paie"
+                  parent="menu_payroll_analyse" action="action_payroll_report_wizard"/> 
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_hr_payroll" model="ir.actions.report">
+            <field name="name">Livre de paie</field>
+            <field name="model">payroll.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">payroll_raport.report_payroll</field>
+            <field name="report_file">payroll_raport.report_payroll</field>
+            <field name="print_report_name">Livre de paie</field>
+            <field name="binding_model_id" ref="model_payroll_report"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

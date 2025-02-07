@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <template id="external_layout_payslip">
+            <div t-attf-class="article o_report_layout_boxed o_company_#{o.company_id.id}_layout"
+                    t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                    t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <div class="pt-5">
+                    <t t-call="web.address_layout"/>
+                </div>
+                <t t-out="0"/>
+            </div>
+        </template>
+
+        <template id="report_payslip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="payroll.external_layout_payslip">
+                        <div class="header">
+                            <style type="text/css">
+                                h1,h2 {font-weight:bold;text-align:center}
+                                table {
+                                border-collapse: collapse;
+                                width: 100%;
+                                font-size: 13px;
+                                border:1px solid black;
+                                border-radius: 10px 10px 10px 10px;
+                                }
+                                td {
+                                height: 8px;
+                                padding:5px;
+
+                                margin: 0px;
+                                }
+                                tr#sous_total, tr#sous_retenu, tr#total_indemnite{
+                                color: #B9121B;
+                                background-color: #E6ECEB;
+                                font-weight:bold;
+                                font-size: 15px
+                                height: 5px;
+                                }
+                                th {
+                                border: 1px solid gray;
+                                text-align: center;
+                                background-color: #E6ECEB;
+                                height: 20px;
+                                vertical-align:middle;
+                                }
+                            </style>
+                            <table>
+                                <tr>
+                                    <td colspan="2">
+                                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                             style="height: 70px; width: 200px;" alt="Logo"/>
+                                    </td>
+                                    <td colspan="3">
+                                        <h1>BULLETIN DE PAIE</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        N° Contribuable
+                                    </td>
+                                    <td>
+                                        <span t-field="o.company_id.company_registry"/>
+                                    </td>
+                                    <td colspan="2" align="center">
+                                        <strong>Période de paie</strong>
+                                    </td>
+                                    <td align="center">
+                                        <strong>Date de paie</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        CNPS Employeur :
+                                        <span t-field="o.company_id.cnps"/>
+                                    </td>
+                                    <td>
+                                        CNPS Employé :
+                                        <span t-field="o.employee_id.cnps"/>
+                                    </td>
+                                    <td align="center">Du :
+                                        <span t-field="o.date_from"/>
+                                    </td>
+                                    <td align="center">Au :
+                                        <span t-field="o.date_to"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-field="o.date_to"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Matricule
+                                    </td>
+                                    <td>
+                                        <!-- <span t-field="o.employee_id.registration_number"/> -->
+                                    </td>
+                                    <td class="text-center" colspan="3" style="text-align:center;background:#E6ECEB;">
+                                        NOM ET PRENOMS
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Part IGR :
+                                        <span t-field="o.employee_id.part_igr"/>
+                                    </td>
+                                    <td>Catégorie salariale :
+                                        <span t-field="o.contract_id.categorie_salariale_id"/>
+                                    </td>
+                                    <td rowspan="3" colspan="3" style="text-align:center;vertical-align:middle;">
+                                        <div>
+                                            <h2>
+                                                <t t-if="o.employee_id.gender =='male'">M. </t>
+                                                <t t-elif="o.employee_id.gender =='female'">Mme. </t>
+                                                <span t-field="o.employee_id.name"/>
+                                            </h2>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Date d'embauche :
+                                        <span t-field="o.contract_id.date_start"/>
+                                    </td>
+                                    <td>
+                                        Situation matrimoniale :
+                                        <t t-if="o.employee_id.marital =='single'">Célibataire</t>
+                                        <t t-if="o.employee_id.marital =='married'">Marié(e)</t>
+                                        <t t-if="o.employee_id.marital =='cohabitant'">Cohabitant légal</t>
+                                        <t t-if="o.employee_id.marital =='widower'">Veuf(ve)</t>
+                                        <t t-if="o.employee_id.marital =='divorced'">Divorcé(e)</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Congé Acquis :
+                                        <span t-field="o.conge_acquis"/>
+                                    </td>
+                                    <td>Congé restant :
+                                        <span t-field="o.conge_restant"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Anciennété :
+                                        <span t-field="o.payslip_seniority"/>
+                                    </td>
+                                    <td>Service :
+                                        <span t-field="o.employee_id.service_id"/>
+                                    </td>
+                                    <td>Département :
+                                        <span t-field="o.employee_id.department_id"/>
+                                    </td>
+                                    <td colspan="2">Mode de paiement :
+                                        <span t-field="o.employee_id.payment_method_id"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Code</th>
+                                        <th rowspan="2">Designation</th>
+                                        <th rowspan="2">Nombre</th>
+                                        <th rowspan="2">Base</th>
+                                        <th colspan="3">Employé</th>
+                                        <th colspan="2">Employeur</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Taux</th>
+                                        <th>Gain</th>
+                                        <th>Retenue</th>
+                                        <th>Taux (%)</th>
+                                        <th>Retenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.dynamic_filtered_payslip_lines.filtered(lambda line: line.appears_on_payslip and line.total != 0 or line.code == 'CRI')"
+                                        t-as="p">
+                                        <tr t-if="not ((p.code == 'BRUT') or (p.code == 'RET') or (p.code == 'C_PNIMP') or (p.code == 'TCOMP'))">
+                                            <!-- CODE -->
+                                            <td align="right">
+                                                <span t-field="p.sequence"/>
+                                            </td>
+                                            <!-- DESIGNATION -->
+                                            <td>
+                                                <span t-field="p.name"/>
+                                            </td>
+                                            <!-- NBRE -->
+                                            <td align="right">
+                                                <span t-if="p.category_id.code !='RET_EMP' and p.code != 'GRATIF' and p.code != 'FIN_CDD' and p.code != 'CONG'"
+                                                        t-esc="o.worked_days_line_ids[0].number_of_days"
+                                                        t-options='{"widget": "float", "precision": 0}'/>
+                                            </td>
+                                            <!-- BASE -->
+                                            <td align="right">
+                                                <t t-if="p.code =='CNPS' or p.code =='ITS' or p.code=='TAXEFP'">
+                                                    <span t-esc="o.brut"
+                                                            t-options='{"widget": "float", "precision": 0}'/>
+                                                </t>
+
+                                                <t t-elif="p.category_id.code=='CPATR' and p.code=='ACT'">
+                                                    <span>75000</span>
+                                                    <!--<span t-esc="o.brut" t-options='{"widget": "float", "precision": 0}'/>-->
+                                                </t>
+
+                                                <t t-else="">
+                                                    <span t-esc="p.amount"
+                                                            t-options='{"widget": "float", "precision": 0}'/>
+                                                </t>
+
+                                            </td>
+                                            <!-- TAUX -->
+                                            <td align="right">
+                                                <span t-if="p.rate !=100 and p.category_id.code !='CPATR'"
+                                                        t-field="p.rate"/>
+                                            </td>
+                                            <!-- GAIN -->
+                                            <td align="right">
+                                                <t t-if="p.category_id.code=='CPATR' or p.category_id.code =='RET_EMP'">
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="p.total"
+                                                            t-options='{"widget": "float", "precision": 0}'/>
+                                                </t>
+                                            </td>
+                                            <!-- RETENU -->
+                                            <td align="right">
+                                                <span t-if="p.category_id.code =='RET_EMP'" t-esc="p.total"
+                                                        t-options='{"widget": "float", "precision": 0}'/>
+                                            </td>
+                                            <!-- TAUX PATRONALE -->
+                                            <td align="right">
+                                                <span t-if="p.rate !=100 and p.category_id.code =='CPATR'"
+                                                        t-esc="p.rate"/>
+                                            </td>
+                                            <!-- RETENUE PATRONALE -->
+                                            <td align="right">
+                                                <span t-if="p.category_id.code =='CPATR'" t-esc="p.total"
+                                                        t-options='{"widget": "float", "precision": 0}'/>
+                                            </td>
+                                        </tr>
+
+                                        <tr t-else="" id="sous_total">
+                                            <t t-if="p.salary_rule_id.code== 'BRUT' or p.salary_rule_id.code== 'C_PNIMP'">
+                                                <td colspan="5">
+                                                    <span t-field="p.name"/>
+                                                </td>
+                                                <td align="right">
+                                                    <span t-esc="p.total"
+                                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                </td>
+                                                <td colspan="3"/>
+                                            </t>
+                                            <t t-if="p.code =='RET'">
+                                                <td colspan="6">
+                                                    <span t-field="p.name"/>
+                                                </td>
+                                                <td align="right">
+                                                    <span t-esc="p.total"
+                                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                </td>
+                                                <td colspan="2"/>
+                                            </t>
+                                            <t t-if="p.code== 'TCOMP'">
+                                                <td colspan="8">
+                                                    <span t-field="p.name"/>
+                                                </td>
+                                                <td align="right">
+                                                    <span t-esc="p.total"
+                                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td t-if="o.fin_ccd or o.licencement" colspan="5" align="center">
+                                            <h5>SOLDE DE TOUT COMPTE</h5>
+                                        </td>
+                                        <td t-else="" colspan="5" align="center">
+                                            <h5>NET A PAYER</h5>
+                                        </td>
+                                        <td colspan="4" >
+                                            <t t-foreach="o.dynamic_filtered_payslip_lines" t-as="l">
+                                                <h5 class="text-center">
+                                                    <span t-if="l.code =='NET'" t-esc="p.total"
+                                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                </h5>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div style="margin-top: 15px; border: 1px solid black;" align="center">
+                                <strong>Total</strong>
+                            </div>
+                            <table style="table-layout: fixed;">
+                                <tr>
+                                    <th>Total gain</th>
+                                    <th>Total retenu employé</th>
+                                    <th>Total retenu employeur</th>
+                                    <th t-if="o.allocation">Salaire moyen mensuel</th>
+                                    <th t-if="o.retenu_abs and not o.allocation and not o.gratification and not o.fin_ccd and not o.paid_leaves">Retenues sur la période au prorata</th>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td align="center">
+                                        <span t-esc="o.total_gain"
+                                                t-options='{"widget": "float", "precision":0}'/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="o.total_retenues"
+                                                t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="o.patronal"
+                                                t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                    <td align="center" t-if="o.allocation">
+                                        <span t-esc="o.salaire_moyen_mensuel"
+                                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td align="center" t-if="o.retenu_abs">
+                                        <span t-if="o.retenu_abs and not o.allocation and not o.gratification and not o.fin_ccd and not o.paid_leaves" t-esc="o.retenu_abs"
+                                                t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <div style="margin-top: 15px; border: 1px solid black;"  align="center">
+                                <strong>Cumuls Annuels</strong>
+                            </div>
+                            <table>
+                                <tr>
+                                    <th>Brut Imposable</th>
+                                    <th>Impôt Traitement sur salaire</th>
+                                    <th>CMU Employé</th>
+                                    <th>CNPS</th>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td>
+                                        <span t-esc="o.get_somme_rubrique(o,'BRUT')"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.get_somme_rubrique(o,'ITS')"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.get_somme_rubrique(o,'CMU_EMPLOYE')"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.get_somme_rubrique(o,'CNPS')"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                </tr>
+                    
+                            </table>
+
+                            <br/>
+                            <br/>
+                            <div>
+                                <span style="text-align:center;display: inline-block;width: 265px;">
+                                    <strong>
+                                        <u>Signature Employé</u>
+                                    </strong>
+                                </span>
+                                <span style="text-align:center;display: inline-block;width: 270px;">
+                                    <strong>
+                                        <u></u>
+                                    </strong>
+                                </span>
+                                <span style="text-align:center;display: inline-block;width: 270px;">
+                                    <strong>
+                                        <u>Signature Employeur</u>
+                                    </strong>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

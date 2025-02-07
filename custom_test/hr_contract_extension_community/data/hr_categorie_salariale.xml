@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+    <record id="1A" model="hr.categorie.salariale">
+      <field name="name">1A</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">75000</field>
+    </record>
+    <record id="1B" model="hr.categorie.salariale">
+      <field name="name">1B</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">2502</field>
+    </record>
+    <record id="1B_journalier" model="hr.categorie.salariale">
+      <field name="name">1B journalier</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">75085</field>
+    </record>
+    <record id="2" model="hr.categorie.salariale">
+      <field name="name">2</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">80518</field>
+    </record>
+    <record id="3" model="hr.categorie.salariale">
+      <field name="name">3</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">82959</field>
+    </record>
+    <record id="4" model="hr.categorie.salariale">
+      <field name="name">4</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">89645</field>
+    </record>
+    <record id="5" model="hr.categorie.salariale">
+      <field name="name">5</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">106970</field>
+    </record>
+    <record id="6" model="hr.categorie.salariale">
+      <field name="name">6</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">116132</field>
+    </record>
+    <record id="7A" model="hr.categorie.salariale">
+      <field name="name">7A</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">116498</field>
+    </record>
+    <record id="7B" model="hr.categorie.salariale">
+      <field name="name">7B</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">122470</field>
+    </record>
+    <record id="8A" model="hr.categorie.salariale">
+      <field name="name">8A</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">122470</field>
+    </record>
+    <record id="8B" model="hr.categorie.salariale">
+      <field name="name">8B</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">124284</field>
+    </record>
+    <record id="8C" model="hr.categorie.salariale">
+      <field name="name">8C</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">124284</field>
+    </record>
+    <record id="9A" model="hr.categorie.salariale">
+      <field name="name">9A</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">125820</field>
+    </record>
+    <record id="9B" model="hr.categorie.salariale">
+      <field name="name">9B</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">141550</field>
+    </record>
+    <record id="10A" model="hr.categorie.salariale">
+      <field name="name">10A</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">148593</field>
+    </record>
+    <record id="10B" model="hr.categorie.salariale">
+      <field name="name">10B</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">166426</field>
+    </record>
+    <record id="10C" model="hr.categorie.salariale">
+      <field name="name">10C</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">187229</field>
+    </record>
+    <record id="11" model="hr.categorie.salariale">
+      <field name="name">11</field>
+      <field name="hr_secteur_activite_id" ref="hr_contract_extension_community.convention_inter_collective" />
+      <field name="salaire_base">208034</field>
+    </record>
+  </data>
+</openerp>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Allow updating on noupdate=True records -->
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+                eval="[('module', '=', 'resource'), ('name', '=', 'resource_calendar_std')]" />
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <record id="resource.resource_calendar_std" model="resource.calendar">
+        <field name="attendance_ids" eval="[
+            (0, 0, {'name': 'Samedi Matin', 'dayofweek': '5', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'Samedi Après-midi', 'dayofweek': '5', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'Dimanche Matin', 'dayofweek': '6', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'Dimanche Après-midi', 'dayofweek': '6', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'})
+        ]"/>
+    </record>
+
+    <!-- Revoke noupdate change -->
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+                eval="[('module', '=', 'resource'), ('name', '=', 'resource_calendar_std')]" />
+        </function>
+        <value eval="{'noupdate': True}" />
+    </function>
+</odoo>

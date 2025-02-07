@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+    <record model="hr.convention" id="convention_inter_collective">
+      <field name="name">Convention collective interprofessionnelle</field>
+    </record>
+    <record model="hr.convention" id="convention_secteur_batiment">
+      <field name="name">Secteur Bâtiment Travaux Publics et Activités Connexes</field>
+    </record>
+    <record model="hr.secteur.activite" id="activite_commerce_negoce">
+      <field name="name">Commerce et Négoce</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_batiement">
+      <field name="name">Bâtiment, Travaux Publics et Activités Connexes</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_btp">
+      <field name="name">BTP</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_secteur_agricole">
+      <field name="name">Secteur agricole</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_commerce_sav">
+      <field name="name">Commercialisation,Installation et SAV</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_secteur_industriel">
+      <field name="name">Secteur Industriel</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_multimedia">
+      <field name="name">Secteur Multimedia</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_secteur_petrolier">
+      <field name="name">Secteur Pétrolier</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_secteur_agricole">
+      <field name="name">Secteur agricole</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_service_prestation">
+      <field name="name">Service et Prestation</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_public">
+      <field name="name">Public</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+    <record model="hr.secteur.activite" id="activite_agro_industrie'">
+      <field name="name">agro-industrie</field>
+      <field name="hr_convention_id" ref="hr_contract_extension_community.convention_inter_collective" />
+    </record>
+  </data>
+</openerp>
