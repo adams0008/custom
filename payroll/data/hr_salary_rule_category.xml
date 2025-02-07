@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="structure_base" model="hr.payroll.structure">
+			<field name="code">BASE</field>
+			<field name="name">Base for new structures</field>
+			<field name="company_id" ref="base.main_company" />
+		</record>
+
+		<record id="IMPOSABLE" model="hr.salary.rule.category">
+			<field name="code">IMPOSABLE</field>
+			<field name="name">Prime et Indemnite Imposable</field>
+
+		</record>
+		<record id="NON_IMPOSABLE" model="hr.salary.rule.category">
+			<field name="code">NON_IMPOSABLE</field>
+			<field name="name">Prime et Indemnite Non Imposable</field>
+		</record>
+
+		<record id="BASE" model="hr.salary.rule.category">
+			<field name="code">BASE</field>
+			<field name="name">Salaire de base</field>
+		</record>
+
+		<record id="BRUT" model="hr.salary.rule.category">
+			<field name="code">BRUT</field>
+			<field name="name">Salaire Brut</field>
+		</record>
+
+		<record id="CHE" model="hr.salary.rule.category">
+			<field name="code">CHE</field>
+			<field name="name">Charge employé</field>
+		</record>
+
+		<record id="RET_EMP" model="hr.salary.rule.category">
+			<field name="code">RET_EMP</field>
+			<field name="name">Retenues employés</field>
+		</record>
+
+		<record id="SALC" model="hr.salary.rule.category">
+			<field name="code">SALC</field>
+			<field name="name">Total Charges Salariales</field>
+		</record>
+
+		<record id="NET" model="hr.salary.rule.category">
+			<field name="code">NET</field>
+			<field name="name">Net</field>
+		</record>
+
+		<record id="CPATR" model="hr.salary.rule.category">
+			<field name="code">CPATR</field>
+			<field name="name">Cotisations Patronales</field>
+		</record>
+
+		<record id="ALLO" model="hr.salary.rule.category">
+			<field name="code">ALLO</field>
+			<field name="name">Allocation congé</field>
+		</record>
+
+		<record id="O_TOTALS" model="hr.salary.rule.category">
+			<field name="code">O_TOTALS</field>
+			<field name="name">Autres Totaux</field>
+		</record>
+
+		<record id="PRORATA" model="hr.salary.rule.category">
+            <field name="name">Déduction prorata</field>
+            <field name="code">PRORATA</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    
+         	<record model="ir.ui.view" id="country_inh_form_view">
+                <field name="name">res.country.form</field>
+                <field name="model">res.country</field>
+                <field name="type">form</field>
+                <field name="inherit_id" ref="base.view_country_form"/>
+                <field name="arch" type="xml">
+                     <field name="code" position="after">
+                     	<field name="nationalite"/>
+                     </field>
+                </field>
+            </record>
+    		
+    		
+    		<!--<menuitem id="pays_employee_menu" name="Pays" parent="hr.menu_hr_configuration" action="base.action_country"/>-->
+    </data>
+</openerp>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+         <!-- les contrats  -->
+
+        <record id="hr_contract_ext_view_form" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="expatried"/>
+                </xpath>
+                <xpath expr="//group[@name='top_info_right']" position="after">
+                    <div class="col-12">
+                        <separator string="Ancienneté"/>
+                        <table class="table table-condensed table-borderless" width="100%">
+                            <tr>
+                                <field name="an_anciennete" class="oe_inline"/> ans <field name="mois_anciennete" class="oe_inline"/> mois
+                            </tr>
+                        </table>
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='salary']" position="replace">
+                    <group name="salary">
+                        <field name="hr_convention_id" />
+                        <field name="hr_secteur_id"/>
+                        <field name="categorie_salariale_id"/>
+                        <label for="wage"/>
+                        <div class="o_row" name="wage">
+                            <field name="wage" class="oe_inline o_hr_narrow_field" nolabel="1" field_id="wage_0"/>
+                            <div class="mb-3" name="wage_period_label">/ mois</div>
+                        </div>
+                        <!-- <field name="sursalaire"/> -->
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

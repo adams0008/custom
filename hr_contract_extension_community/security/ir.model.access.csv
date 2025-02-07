@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_convention,hr.convention,hr_contract_extension_community.model_hr_convention,hr.group_hr_manager,1,1,1,1
+access_hr_secteur_activite,hr.secteur.activite,hr_contract_extension_community.model_hr_secteur_activite,hr.group_hr_manager,1,1,1,1
+access_hr_categorie_salariale,hr.categorie.salariale,model_hr_categorie_salariale,hr.group_hr_manager,1,1,1,1
+access_hr_categorie_salariale_prime,hr.categorie.salariale.prime,model_hr_categorie_salariale_prime,hr.group_hr_manager,1,1,1,1
+access_notify.manager,notify.manager,model_notify_manager,hr.group_hr_manager,1,1,1,1
+access_notify.configuration,notify.configuration,model_notify_configuration,hr.group_hr_manager,1,1,1,1

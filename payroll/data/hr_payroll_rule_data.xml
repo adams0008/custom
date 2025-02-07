@@ -1,0 +1,1225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--===========  REGLE SALARIALE  ========================-->
+        <record id="hr_salary_rule_base" model="hr.salary.rule">
+            <field name="code">BASE</field>
+            <field name="sequence">100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">contract.wage</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Salaire de base</field>
+            <field name="category_id" ref="payroll.BASE"/>
+            <field name="quantity">payslip.work_day/30</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_salary_rule_sursa" model="hr.salary.rule">
+            <field name="code">SURSA</field>
+            <field name="sequence">101</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Sursalaire</field>
+            <field name="condition_python">result = contract.extra_pay</field>
+            <field name="amount_percentage_base">result</field>
+            <field name="category_id" ref="payroll.BASE"/>
+            <field name="quantity">payslip.work_day/30</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_salary_rule_brut" model="hr.salary.rule">
+            <field name="code">BRUT</field>
+            <field name="sequence">105</field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="True"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Total Brut Imposable</field>
+            <field name="amount_python_compute">
+result = categories.BASE + categories.IMPOSABLE
+            </field>
+            <field name="category_id" ref="payroll.BRUT"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_com" model="hr.salary.rule">
+            <field name="code">COM</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Commission</field>
+            <field name="condition_python">result = payslip.bonus</field>
+            <field name="amount_percentage_base">result</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_salary_rule_except" model="hr.salary.rule">
+            <field name="code">EXCEPT</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime exceptionnelle</field>
+            <field name="condition_python">result = payslip.special_bonus</field>
+            <field name="amount_percentage_base">result</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_salary_rule_cong_pay" model="hr.salary.rule">
+            <field name="code">CONG_PAY</field>
+            <field name="sequence">101</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Congés payés</field>
+            <field name="condition_python">result = payslip.paid_leaves</field>
+            <field name="amount_percentage_base">result</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+            <field name="amount_percentage">100.0</field>
+        </record>
+
+        <record id="hr_salary_rule_prorata" model="hr.salary.rule">
+            <field name="code">PRO</field>
+            <field name="sequence">1705</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Déduction prorata brut imposable</field>
+            <field name="condition_python">result = payslip.retenu_abs</field>
+            <field name="amount_python_compute">
+if payslip.work_day &lt; 30 and not payslip.allocation and not payslip.gratification and not payslip.fin_ccd:
+    temp = ((payslip.work_day * contract.total_net) /30 ) - NET_PAIE
+else :
+    temp = 0
+result =  temp
+            </field>
+            <field name="category_id" ref="payroll.PRORATA"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_vits" model="hr.salary.rule">
+            <field name="code">VITS</field>
+            <field name="sequence">400</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">BRUT</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Valeurs ITS</field>
+            <field name="amount_python_compute">temp=0
+if 75000>BRUT :
+    temp= 0
+elif 240000>BRUT :
+    temp= ((BRUT - 75000)*0.16)
+elif 800000>BRUT :
+    temp= ((BRUT -240000) *0.21)+26400
+elif 2400000>BRUT :
+    temp= ((BRUT-800000) *0.24)+144000
+elif 8000000>BRUT :
+    temp= ((BRUT-2400000) *0.28)+527999
+else:
+    temp= ((BRUT -8000000) *0.32)+2095999
+
+result = temp
+            </field>
+            <field name="category_id" ref="payroll.CHE"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_cri" model="hr.salary.rule">
+            <field name="code">CRI</field>
+            <field name="sequence">401</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">categories.BRUT</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Crédit Impôt</field>
+            <field name="amount_python_compute">temp=0
+part = employee.part_igr
+if 1==part :
+    temp= 0
+elif 1.5==part :
+    temp=5500
+elif 2==part :
+    temp=11000
+elif 2.5==part :
+    temp= 16500
+elif 3==part :
+    temp=22000
+elif 3.5==part :
+    temp=27500
+elif 4==part :
+    temp=33000
+elif 4.5==part :
+    temp=38500
+else:
+    temp= 44000
+
+result = temp
+            </field>
+            <field name="category_id" ref="payroll.CHE"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_its" model="hr.salary.rule">
+            <field name="code">ITS</field>
+            <field name="sequence">402</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">categories.BRUT</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Nouveau Régime (RICF)</field>
+            <field name="amount_python_compute">result = (VITS - CRI) > 0 and VITS - CRI or 0</field>
+            <field name="category_id" ref="payroll.RET_EMP"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+
+        <record id="hr_salary_rule_abat_10" model="hr.salary.rule">
+            <field name="code">ABAT_10</field>
+            <field name="sequence">215</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Abatement 10%</field>
+            <field name="condition_python">result = bool(inputs.REPR)</field>
+            <field name="amount_python_compute">result =payslip.arrondi(BRUT*0.1)</field>
+            <field name="category_id" ref="payroll.RET_EMP"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_cnps" model="hr.salary.rule">
+            <field name="code">CNPS</field>
+            <field name="sequence">403</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">6.3</field>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">BASE_CNPS</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Retraite Générale (C.N.P.S)</field>
+            <field name="category_id" ref="payroll.RET_EMP"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_base_cnps" model="hr.salary.rule">
+            <field name="code">BASE_CNPS</field>
+            <field name="sequence">109</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Base Imposable CNPS</field>
+            <field name="amount_python_compute">result = min(BRUT, 3375000)</field>
+            <field name="category_id" ref="payroll.BRUT"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_cmu_employe" model="hr.salary.rule">
+            <field name="code">CMU_EMPLOYE</field>
+            <field name="sequence">404</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">CMU Employe</field>
+            <field name="condition_python">result = employee.cmu_employee</field>
+            <field name="amount_python_compute">result = employee.cmu_employee</field>
+            <field name="category_id" ref="payroll.RET_EMP"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_pfmle" model="hr.salary.rule">
+            <field name="code">PFMLE</field>
+            <field name="sequence">1014</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">5.7500</field>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">75000</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prestations Familiales</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_act" model="hr.salary.rule">
+            <field name="code">ACT</field>
+            <field name="sequence">1015</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">3.0000</field>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">75000</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Accidents du Travail</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_cnps_p" model="hr.salary.rule">
+            <field name="code">CNPS_P</field>
+            <field name="sequence">1016</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">7.7000</field>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">min(BASE_CNPS,3375000)</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="name">Retraite Générale (C.N.P.S) Patronale</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_taxe_ap" model="hr.salary.rule">
+            <field name="code">TAXEAP</field>
+            <field name="sequence">1017</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.4000</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Taxe d'apprentissage</field>
+            <field name="amount_percentage_base">BRUT</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1.0</field>
+        </record>
+        <record id="hr_salary_rule_taxe_pf" model="hr.salary.rule">
+            <field name="code">TAXEFP</field>
+            <field name="sequence">1018</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Taxe Formation Prof. Continue</field>
+            <field name="amount_python_compute">result =BRUT*0.012</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_its_p" model="hr.salary.rule">
+            <field name="code">ITS_P</field>
+            <field name="sequence">1019</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.2000</field>
+            <field name="condition_select">none</field>
+            <field name="amount_percentage_base">BRUT</field>
+            <field name="amount_select">percentage</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Impôt sur trait. et sal. (ITS)</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1.0</field>
+        </record>
+        <record id="hr_salary_rule_cmu_employeur" model="hr.salary.rule">
+            <field name="code">CMU_EMPLOYEUR</field>
+            <field name="sequence">1020</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">CMU Employeur</field>
+            <field name="condition_python">result = employee.cmu_employeur</field>
+            <field name="amount_python_compute">result = employee.cmu_employeur</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_panc" model="hr.salary.rule">
+            <field name="code">PANC</field>
+            <field name="sequence">102</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.an_anciennete</field>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_range_min">2.0</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_percentage_base">BASE</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">25.0</field>
+            <field name="name">Prime d'ancienneté</field>
+            <field name="condition_python">result = 26 > payslip.payslip_an_anciennete > 1</field>
+            <field name="amount_python_compute">result =0.01 * categories.BASE * payslip.payslip_an_anciennete</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_ret" model="hr.salary.rule">
+            <field name="code">RET</field>
+            <field name="sequence">499</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="name">Total Retenues</field>
+            <field name="amount_python_compute">result = categories.RET_EMP</field>
+            <field name="category_id" ref="payroll.SALC"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_pcomp" model="hr.salary.rule">
+            <field name="code">TCOMP</field>
+            <field name="sequence">1099</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="name">Total Charges Patronales</field>
+            <field name="amount_python_compute">result = categories.CPATR</field>
+            <field name="category_id" ref="payroll.O_TOTALS"/>
+            <field name="quantity">1.0</field>
+        </record>
+        <record id="hr_salary_rule_gain" model="hr.salary.rule">
+            <field name="code">GAIN</field>
+            <field name="sequence">1704</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="condition_select">none</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Total GAIN</field>
+            <field name="amount_python_compute">result = BRUT + categories.NON_IMPOSABLE</field>
+            <field name="category_id" ref="payroll.NET"/>
+            <field name="quantity">1.0</field>
+        </record>
+        <record id="hr_salary_rule_net_paie" model="hr.salary.rule">
+            <field name="code">NET_PAIE</field>
+            <field name="sequence">1704</field>
+            <field name="appears_on_payslip" eval="0"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="condition_select">none</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Net de paie</field>
+            <field name="amount_python_compute">result = BRUT - RET + categories.NON_IMPOSABLE</field>
+            <field name="category_id" ref="payroll.NET"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_net" model="hr.salary.rule">
+            <field name="code">NET</field>
+            <field name="sequence">1706</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Net</field>
+            <field name="amount_python_compute">temp=0
+if payslip.work_day &lt; 30 and not payslip.allocation and not payslip.gratification and not payslip.fin_ccd:
+    temp = (payslip.work_day * contract.total_net) /30
+elif payslip.work_day == 0:
+    temp = NET_PAIE
+else:
+    if bool(inputs.IMP_CARB):
+        temp = NET_PAIE - EMP
+    else :
+        temp = NET_PAIE
+result = temp
+           </field>
+            <field name="category_id" ref="payroll.NET"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+
+        <!--Prime imposable-->
+
+        <record id="hr_salary_rule_fin_cdd" model="hr.salary.rule">
+            <field name="code">FIN_CDD</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Precarité</field>
+            <field name="condition_python">result = payslip.fin_ccd</field>
+            <field name="amount_python_compute">result = employee.indemnite_fin_cdd</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_gratif" model="hr.salary.rule">
+            <field name="code">GRATIF</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Gratification</field>
+            <field name="condition_python">result = payslip.gratification</field>
+            <field name="amount_python_compute">result = employee.prime_gratification</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+
+        <record id="hr_salary_rule_imp_carb" model="hr.salary.rule">
+            <field name="code">IMP_CARB</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de carburant imposable</field>
+            <field name="condition_python">result = bool(inputs.IMP_CARB)</field>
+            <field name="amount_python_compute">result = (inputs.IMP_CARB.amount) / 3</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_tel" model="hr.salary.rule">
+            <field name="code">TEL</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Dotation telephonique imposable</field>
+            <field name="condition_python">result = bool(inputs.TEL)</field>
+            <field name="amount_python_compute">result = (inputs.TEL.amount) / 3</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_preav" model="hr.salary.rule">
+            <field name="code">PREAV</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de préavis</field>
+            <field name="condition_python">result = payslip.preavis</field>
+            <field name="amount_python_compute">result = employee.indemnite_preavis</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_lic" model="hr.salary.rule">
+            <field name="code">LIC</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de licencement</field>
+            <field name="condition_python">result = payslip.licencement</field>
+            <field name="amount_python_compute">result = (employee.indemnite_licencement) / 2</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_non_lic" model="hr.salary.rule">
+            <field name="code">NON_LIC</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de licencement non imposable</field>
+            <field name="condition_python">result = payslip.licencement</field>
+            <field name="amount_python_compute">result = (employee.indemnite_licencement) / 2</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_pat_lic" model="hr.salary.rule">
+            <field name="code">PAT_LIC</field>
+            <field name="sequence">1021</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de licencement employeur</field>
+            <field name="condition_python">result = payslip.licencement</field>
+            <field name="amount_python_compute">result = (employee.indemnite_licencement)</field>
+            <field name="category_id" ref="payroll.CPATR"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_trsp_imp" model="hr.salary.rule">
+            <field name="code">TRSP_IMP</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Prime de transport imposable</field>
+            <field name="condition_python">result = bool(inputs.TRSP_IMP)</field>
+            <field name="amount_python_compute">result = inputs.TRSP_IMP.amount * payslip.work_day / 30</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+        <record id="hr_salary_rule_indml" model="hr.salary.rule">
+            <field name="code">INDML</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de Logement</field>
+            <field name="condition_python">result = bool(inputs.INDML)</field>
+            <field name="amount_python_compute">result = inputs.INDML.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_assur" model="hr.salary.rule">
+            <field name="code">ASSUR</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">ASSURANCE</field>
+            <field name="condition_python">result = bool(inputs.ASSUR)</field>
+            <field name="amount_python_compute">result = inputs.ASSUR.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_fonct" model="hr.salary.rule">
+            <field name="code">FONCT</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">FONCTION</field>
+            <field name="condition_python">result = bool(inputs.FONCT)</field>
+            <field name="amount_python_compute">result = inputs.FONCT.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pres" model="hr.salary.rule">
+            <field name="code">PRES</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Prime de responsabilité</field>
+            <field name="condition_python">result = bool(inputs.PRES)</field>
+            <field name="amount_python_compute">result = inputs.PRES.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_avtgn" model="hr.salary.rule">
+            <field name="code">AVTGN</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Avantages en Nature</field>
+            <field name="condition_python">result = bool(inputs.AVTGN)</field>
+            <field name="amount_python_compute">result = inputs.AVTGN.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_iki" model="hr.salary.rule">
+            <field name="code">IKI</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Indemnité kilométrique imposable</field>
+            <field name="condition_python">result = bool(inputs.IKI)</field>
+            <field name="amount_python_compute">result = inputs.IKI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+        <record id="hr_salary_rule_tci" model="hr.salary.rule">
+            <field name="code">TCI</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Tickets de cantine imposable</field>
+            <field name="condition_python">result = bool(inputs.TCI)</field>
+            <field name="amount_python_compute">result = inputs.TCI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_isi" model="hr.salary.rule">
+            <field name="code">ISI</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Indemnité de stage imposable</field>
+            <field name="condition_python">result = bool(inputs.ISI)</field>
+            <field name="amount_python_compute">result = inputs.ISI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pri" model="hr.salary.rule">
+            <field name="code">PRI</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Prime de représentation imposable</field>
+            <field name="condition_python">result = bool(inputs.PRI)</field>
+            <field name="amount_python_compute">result = inputs.PRI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_tech" model="hr.salary.rule">
+            <field name="code">TECH</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime technicité</field>
+            <field name="condition_python">result = bool(inputs.PTI)</field>
+            <field name="amount_python_compute">result = inputs.PTI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_hsi" model="hr.salary.rule">
+            <field name="code">HSI</field>
+            <field name="sequence">104</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Heures supplémentaires</field>
+            <field name="condition_python">result = bool(inputs.HSI)</field>
+            <field name="amount_python_compute">result = inputs.HSI.amount</field>
+            <field name="category_id" ref="payroll.IMPOSABLE"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+
+        <!--==================================================
+            PRIME NON IMPOSABLE
+        ========================================-->
+
+        <record id="hr_salary_rule_non_carb" model="hr.salary.rule">
+            <field name="code">NON_CARB</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de carburant non imposable</field>
+            <field name="condition_python">result = bool(inputs.IMP_CARB)</field>
+            <field name="amount_python_compute">result = (inputs.IMP_CARB.amount) * 2 / 3</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_non_tel" model="hr.salary.rule">
+            <field name="code">NON_TEL</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.00</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Dotation telephonique non imposable</field>
+            <field name="condition_python">result = bool(inputs.TEL)</field>
+            <field name="amount_python_compute">result = (inputs.TEL.amount) * 2 / 3</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">1</field>
+        </record>
+
+        <record id="hr_salary_rule_prs" model="hr.salary.rule">
+            <field name="code">PRS</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de Risque</field>
+            <field name="condition_python">result = bool(inputs.PRS)</field>
+            <field name="amount_python_compute">result = inputs.PRS.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_pa" model="hr.salary.rule">
+            <field name="code">PA</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime d'assiduité</field>
+            <field name="condition_python">result = bool(inputs.PA)</field>
+            <field name="amount_python_compute">result = inputs.PA.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">1.0</field>
+        </record>
+
+        <record id="hr_salary_rule_pc" model="hr.salary.rule">
+            <field name="code">PC</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime caisse</field>
+            <field name="condition_python">result = bool(inputs.PC)</field>
+            <field name="amount_python_compute">result = inputs.PC.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_ps" model="hr.salary.rule">
+            <field name="code">PS</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime salissure</field>
+            <field name="condition_python">result = bool(inputs.PS)</field>
+            <field name="amount_python_compute">result = inputs.PS.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pp" model="hr.salary.rule">
+            <field name="code">PP</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime panier</field>
+            <field name="condition_python">result = bool(inputs.PP)</field>
+            <field name="amount_python_compute">result = inputs.PP.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_po" model="hr.salary.rule">
+            <field name="code">PO</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime outillage</field>
+            <field name="condition_python">result = bool(inputs.PO)</field>
+            <field name="amount_python_compute">result = inputs.PO.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pf" model="hr.salary.rule">
+            <field name="code">PF</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime fonction</field>
+            <field name="condition_python">result = bool(inputs.PF)</field>
+            <field name="amount_python_compute">result = inputs.PF.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+
+        <record id="hr_salary_rule_ic" model="hr.salary.rule">
+            <field name="code">IC</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de communication</field>
+            <field name="condition_python">result = bool(inputs.IC)</field>
+            <field name="amount_python_compute">result = inputs.IC.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_erv" model="hr.salary.rule">
+            <field name="code">ERV</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Entretien et réparation de véhicule</field>
+            <field name="condition_python">result = bool(inputs.ERV)</field>
+            <field name="amount_python_compute">result = inputs.ERV.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_ai" model="hr.salary.rule">
+            <field name="code">AI</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Autres indemnités</field>
+            <field name="condition_python">result = bool(inputs.AI)</field>
+            <field name="amount_python_compute">result = inputs.AI.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pn" model="hr.salary.rule">
+            <field name="code">PN</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de nettoyage</field>
+            <field name="condition_python">result = bool(inputs.PN)</field>
+            <field name="amount_python_compute">result = inputs.PN.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pt" model="hr.salary.rule">
+            <field name="code">PT</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de tenue</field>
+            <field name="condition_python">result = bool(inputs.PT)</field>
+            <field name="amount_python_compute">result = inputs.PT.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_is" model="hr.salary.rule">
+            <field name="code">IS</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité de stage</field>
+            <field name="condition_python">result = bool(inputs.IS)</field>
+            <field name="amount_python_compute">result = inputs.IS.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_pr" model="hr.salary.rule">
+            <field name="code">PR</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Prime de représentation</field>
+            <field name="condition_python">result = bool(inputs.PR)</field>
+            <field name="amount_python_compute">result = inputs.PR.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_ik" model="hr.salary.rule">
+            <field name="code">IK</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Indemnité kilométrique</field>
+            <field name="condition_python">result = bool(inputs.IK)</field>
+            <field name="amount_python_compute">result = inputs.IK.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_tc" model="hr.salary.rule">
+            <field name="code">TC</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Tickets de cantine</field>
+            <field name="condition_python">result = bool(inputs.TC)</field>
+            <field name="amount_python_compute">result = inputs.TC.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+        <record id="hr_salary_rule_fm" model="hr.salary.rule">
+            <field name="code">FM</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">1.0000</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Frais médicaux</field>
+            <field name="condition_python">result = bool(inputs.FM)</field>
+            <field name="amount_python_compute">result = inputs.TRSP.amount</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+
+        <record id="hr_salary_rule_trsp" model="hr.salary.rule">
+            <field name="code">TRSP</field>
+            <field name="sequence">1100</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="condition_range">contract.wage</field>
+            <field name="amount_fix">0.00</field>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">python</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="condition_range_max">0.0</field>
+            <field name="name">Prime de transport</field>
+            <field name="condition_python">result = bool(inputs.TRSP)</field>
+            <field name="amount_python_compute">result = (inputs.TRSP.amount) * payslip.work_day / 30</field>
+            <field name="category_id" ref="payroll.NON_IMPOSABLE"/>
+            <field name="quantity">payslip.work_day/30</field>
+        </record>
+
+
+        <record id="hr_salary_rule_c_pnimp" model="hr.salary.rule">
+            <field name="code">C_PNIMP</field>
+            <field name="sequence">1110</field>
+            <field name="appears_on_payslip" eval="1"/>
+            <field name="struct_id" ref="payroll.structure_base"/>
+            <field name="amount_percentage">0.0000</field>
+            <field name="condition_range_min">0.0</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="active" eval="1"/>
+            <field name="name">Total Non imposable</field>
+             <field name="amount_python_compute">result = categories.NON_IMPOSABLE</field>
+            <field name="category_id" ref="payroll.O_TOTALS"/>
+            <field name="quantity">1.0</field>
+        </record>
+    </data>
+</odoo>

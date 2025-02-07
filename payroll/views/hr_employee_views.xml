@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Employee View -->
+    <record id="hr_employee_view_form" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.payroll</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="%(hr_payslip_action_employee)d"
+                    class="oe_stat_button"
+                    icon="fa-money"
+                    type="action"
+                    groups="payroll.group_payroll_user"
+                >
+                    <field name="payslip_count" widget="statinfo" string="Payslips" />
+                </button>
+                
+            </xpath>
+            <xpath expr="//field[@name='identification_id']" position="attributes">
+                <attribute name="string">Piece d'identité</attribute>
+            </xpath>
+            <xpath expr="//field[@name='bank_account_id']" position="after">
+                <field name="payment_method_id"/>
+            </xpath>
+            <xpath expr="//group[@name='active_group']" position="inside">
+                <field name="indice"/>
+                <field name="coeff"/>
+                <field name="niveau"/>
+
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button class="oe_stat_button" name="main_function" string="Calcul paramètre RH &amp; Congés"
+                        type="object" icon="fa-cogs"/>
+            </xpath>
+
+            <xpath expr="//field[@name='identification_id']" position="after">
+                <field name="cnps"/>
+            </xpath>
+            <xpath expr="//field[@name='children']" position="after">
+                <field name="part_igr"/>
+                <field name="cmu_employee" string="CMU Employé" readonly="1"/>
+                <field name="cmu_employeur" string="CMU Employeur" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_type']" position="after">
+                <field name="category_employee_id" invisible="1"/>
+                <field name="date_first_contract" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@name='emergency']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='cmu_employeur']" position="after">
+                <separator string="Personne à contacter "/>
+                <field name="emergency_contact"/>
+                <field name="emergency_phone" class="o_force_ltr"/>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <page string="Autres indemnités" groups="hr.group_hr_manager, base.group_user">
+                    <group>
+                        <group>
+                            <field name="indemnite_fin_cdd" class="oe_inline"/>
+                            <field name="leave_date_from" class="oe_inline" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="prime_gratification" class="oe_inline"/>
+                            <field name="leave_date_to" class="oe_inline" invisible="1"/>
+                        </group>
+                        <group>
+                            <group string="Licencement">
+                                <field name="debut_decompte" class="oe_inline"/>
+                                <field name="debut_rupture" class="oe_inline"/>
+
+                                <field name="indemnite_licencement" class="oe_inline"/>
+                                <field name="indemnite_licencement2" class="oe_inline" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Retraite">
+                            <field name="is_retraite" class="oe_inline"/>
+                            <field name="indemnite_retraite" class="oe_inline"/>
+                            <field name="indemnite_retraite2" class="oe_inline" invisible="1"/>
+                        </group>
+                        <group string="Préavis">
+                            <field name="indemnite_months" class="oe_inline"/>
+                            <field name="indemnite_preavis" class="oe_inline"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

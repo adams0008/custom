@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record forcecreate="True" id="input_type_prime" model="hr.payslip.input.type">
+             <field name="name">Prime et Indemité</field>
+             <field name="code">PRD</field>
+        </record>
+        <record forcecreate="True" id="hr_config" model="hr.config">
+             <field name="name">Configuration PAIE</field>
+             <field name="days_work">30</field>
+             <field name="cmu">1000</field>
+             <field name="holiday">2.75</field>
+        </record>
+
+    	<record model="hr.payroll.prime" id="prime_transport">
+             <field name="name">Prime de transport </field>
+             <field name="code">TRSP_IMP</field>
+             <field name="description">Prime de transport </field>
+             <field name="type">imposable</field>
+        </record>
+
+         <record model="hr.payroll.prime" id="indemite_logement">
+             <field name="name">Indemnité de logement</field>
+             <field name="code">INDML</field>
+             <field name="description">Indemnité versée pour le logement de l'employé</field>
+             <field name="type">imposable</field>
+         </record>
+         <record model="hr.payroll.prime" id="prime_assurance">
+             <field name="name">Prime d'assurance</field>
+             <field name="code">ASSUR</field>
+             <field name="description">la prime versée pour l'assurance de l'employé</field>
+             <field name="type">imposable</field>
+         </record>
+         <record model="hr.payroll.prime" id="prime_fonction">
+             <field name="name">Prime de fonction imposable</field>
+             <field name="code">FONCT</field>
+             <field name="type">imposable</field>
+         </record>
+         <record model="hr.payroll.prime" id="prime_responsabilite">
+             <field name="name">Prime de responsabilité</field>
+             <field name="code">PRES</field>
+             <field name="type">imposable</field>
+         </record>
+
+         <record model="hr.payroll.prime" id="avantage_nature">
+             <field name="name">Avantages en natures</field>
+             <field name="code">AVTGN</field>
+             <field name="type">imposable</field>
+         </record>
+
+        <record model="hr.payroll.prime" id="prime_indem_kilom_imp">
+             <field name="name">Indemnité kilométrique imposable</field>
+             <field name="code">IKI</field>
+             <field name="description">Indemnité kilométrique imposable</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_tick_can_imp">
+             <field name="name">Tickets de cantine imposable</field>
+             <field name="code">TCI</field>
+             <field name="description">Tickets de cantine imposable</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_indem_stage_imp">
+             <field name="name">Indemnité de stage imposable</field>
+             <field name="code">ISI</field>
+             <field name="description">Indemnité de stage imposable</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_representation_imp">
+             <field name="name">Prime de représentation imposable</field>
+             <field name="code">PRI</field>
+             <field name="description">Prime de représentation imposable</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_technicite_imp">
+             <field name="name">Prime de technicité</field>
+             <field name="code">PTI</field>
+             <field name="description">Prime de technicité</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_heure_sup_imp">
+             <field name="name">Heures supplémentaires</field>
+             <field name="code">HSI</field>
+             <field name="description">Heures supplémentaires</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="dotation_telephone">
+             <field name="name">Dotation téléphonique</field>
+             <field name="code">TEL</field>
+             <field name="description">Dotation téléphonique</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_preavis">
+             <field name="name">Indemnité de préavis</field>
+             <field name="code">PREAV</field>
+             <field name="description">Indemnité de préavis</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_licencement">
+             <field name="name">Indemnité de licencement</field>
+             <field name="code">LIC</field>
+             <field name="description">Indemnité de licencement</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_carburant_imposable">
+            <field name="name">Prime de carburant</field>
+            <field name="code">IMP_CARB</field>
+            <field name="description">Prime de carburant</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_gratification">
+             <field name="name">Gratification</field>
+             <field name="code">GRATIF</field>
+             <field name="description">la gratification pour l'employé</field>
+             <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_precarite_fin_cdd">
+            <field name="name">Prime de precarite</field>
+            <field name="code">FIN_CDD</field>
+            <field name="description">Prime de precarite</field>
+            <field name="type">imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_allocation_conge">
+            <field name="name">Prime allocation congé</field>
+            <field name="code">CONG</field>
+            <field name="description">Prime allocation congé</field>
+            <field name="type">imposable</field>
+        </record>
+        
+        
+<!--==================================================
+ PRIME NON IMPOSABLE
+========================================-->
+        
+        <record model="hr.payroll.prime" id="prime_risque">
+            <field name="name">Prime de Risque</field>
+            <field name="code">PR</field>
+            <field name="description">Prime de Risque</field>
+            <field name="type">not_imposable</field>
+        </record>
+        <record model="hr.payroll.prime" id="prime_assiduite">
+             <field name="name">Prime d'assiduité</field>
+             <field name="code">PA</field>
+             <field name="description">Prime d'assiduité</field>
+            <field name="type">not_imposable</field>
+        </record>
+        <record model="hr.payroll.prime" id="prime_caisse">
+             <field name="name">Prime de Caisse</field>
+             <field name="code">PC</field>
+             <field name="description">Prime de Caisse</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_salissure">
+             <field name="name">Prime de Salissure</field>
+             <field name="code">PS</field>
+             <field name="description">Prime de Salissure</field>
+            <field name="type">not_imposable</field>
+        </record>
+        <record model="hr.payroll.prime" id="prime_panier">
+             <field name="name">Prime de Panier</field>
+             <field name="code">PP</field>
+             <field name="description">Prime de Panier</field>
+            <field name="type">not_imposable</field>
+        </record>
+        <record model="hr.payroll.prime" id="prime_outillage">
+             <field name="name">Prime de Outillage</field>
+             <field name="code">PO</field>
+             <field name="description">Prime de Outillage</field>
+            <field name="type">not_imposable</field>
+        </record>
+        <record model="hr.payroll.prime" id="prime_fonction_non">
+             <field name="name">Prime de fonction</field>
+             <field name="code">PF</field>
+             <field name="description">Prime de fonction</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_indem_commun">
+             <field name="name">Indemnité de communication</field>
+             <field name="code">IC</field>
+             <field name="description">Indemnité de communication</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_ent_repar_veh">
+             <field name="name">Entretien et réparation de véhicule</field>
+             <field name="code">ERV</field>
+             <field name="description">Entretien et réparation de véhicule</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_autre_indem">
+             <field name="name">Autres indemnités</field>
+             <field name="code">AI</field>
+             <field name="description">Autres indemnités</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_nettoyage">
+             <field name="name">Prime de nettoyage</field>
+             <field name="code">PN</field>
+             <field name="description">Prime de nettoyage</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_tenue">
+             <field name="name">Prime de tenue</field>
+             <field name="code">PT</field>
+             <field name="description">Prime de tenue</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_carburant">
+             <field name="name">Prime de carburant</field>
+             <field name="code">PCA</field>
+             <field name="description">Prime de carburant</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_indem_stage">
+             <field name="name">Indemnité de stage</field>
+             <field name="code">IS</field>
+             <field name="description">Indemnité de stage</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_representation">
+             <field name="name">Prime de représentation</field>
+             <field name="code">PRE</field>
+             <field name="description">Prime de représentation</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_indem_kilom">
+             <field name="name">Indemnité kilométrique</field>
+             <field name="code">IK</field>
+             <field name="description">Indemnité kilométrique</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_tick_can">
+             <field name="name">Tickets de cantine</field>
+             <field name="code">TC</field>
+             <field name="description">Tickets de cantine</field>
+            <field name="type">not_imposable</field>
+        </record>
+
+        <record model="hr.payroll.prime" id="prime_frai_medicaux">
+             <field name="name">Frais médicaux </field>
+             <field name="code">FM</field>
+             <field name="description">Frais médicaux </field>
+            <field name="type">not_imposable</field>
+        </record>
+
+
+        <record model="hr.payroll.prime" id="prime_transport_non">
+             <field name="name">Prime de transport non imposable</field>
+             <field name="code">TRSP</field>
+             <field name="description">la prime versée pour le transport de l'employé</field>
+            <field name="type">not_imposable</field>
+         </record>
+
+        <record model="hr.payroll.prime" id="indemnite_precarite">
+             <field name="name">Indemnité de précarité</field>
+             <field name="code">IP</field>
+             <field name="description">la prime versée pour le transport de l'employé</field>
+            <field name="type">not_imposable</field>
+         </record>
+
+    </data>
+</odoo>

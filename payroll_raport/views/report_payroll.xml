@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_payroll">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="data_report_margin_top" t-value="12"/>
+                    <t t-set="data_report_header_spacing" t-value="9"/>
+                    <t t-set="data_report_dpi" t-value="110"/>
+
+                    <t t-if="data.get('form').get('orientation') == 'portrait'" >
+                        <t t-foreach="range(0, len(set(docs.mapped('employee_id'))), 4)" t-as="page_start">
+                            <t t-if="len(docs[page_start:page_start + 4]) > 0">
+                                <div class="page">
+                                    <style type="text/css">
+                                        body {
+                                        font-family: Arial, sans-serif;
+                                        }
+                                        table {
+                                        border-collapse: collapse;
+                                        width: 100%;
+                                        }
+                                        td, th {
+                                        border: 1px solid gray;
+                                        text-align: center;
+                                        padding: 5px;
+                                        }
+                                        th {
+                                        background-color: #f0f0f0;
+                                        }
+                                        .highlight-yellow {
+                                        background-color: yellow;
+                                        }
+
+                                        /* Force a page break after every group of 4 employees */
+                                        .page {
+                                        page-break-inside: avoid;
+                                        }
+                                    </style>
+                                    <div style="text-align: center;">
+                                        <h3>Livre de paie de la période du
+                                            <t t-esc="data.get('form').get('date_from')"/>
+                                            au
+                                            <t t-esc="data.get('form').get('date_to')"/>
+                                        </h3>
+                                    </div>
+
+                                    <!-- Display employees in groups of 4 -->
+                                    <table style="margin-top:20px">
+                                        <thead>
+                                            <tr>
+                                                <th>Rubriques</th>
+                                                <t t-foreach="range(page_start, min(page_start + 4, len(set(docs.mapped('employee_id')))))"
+                                                t-as="i">
+                                                    <th>
+                                                        <t t-esc="docs[i].employee_id.name"/>
+                                                    </th>
+                                                </t>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="docs[0].line_ids.mapped('salary_rule_id')" t-as="rule">
+                                                <t t-set="total" t-value="0"/>
+                                                <tr t-att-class="rule.name == 'Total Brut' and 'highlight-yellow' or (rule.name == 'Total Brut Imposable' and 'highlight-yellow' or '') or (rule.name == 'Total Retenues' and 'highlight-yellow' or '') or (rule.name == 'Total Charges Patronales' and 'highlight-yellow' or '') or (rule.name == 'Total GAIN' and 'highlight-yellow' or '')">
+                                                    <td>
+                                                        <t t-esc="rule.name"/>
+                                                    </td>
+                                                    <t t-foreach="range(page_start, min(page_start + 4, len(set(docs.mapped('employee_id')))))"
+                                                    t-as="i">
+                                                        <td>
+                                                            <span t-esc="int(sum(docs.filtered(lambda l: l.employee_id.id == docs[i].employee_id.id).line_ids.filtered(lambda l: l.salary_rule_id == rule).mapped('total')))" t-options="{'widget': 'monetary', 'display_currency': docs.currency_id}"/>
+                                                            <t t-set="total"
+                                                            t-value="int(total + sum(docs.filtered(lambda l: l.employee_id.id == docs[i].employee_id.id).line_ids.filtered(lambda l: l.salary_rule_id == rule).mapped('total')))"/>
+                                                            <span t-esc="docs.currency_id.symbol"/>
+                                                        </td>
+                                                    </t>
+                                                    <td>
+                                                        <span t-esc="int(total)"/>
+                                                        <span t-esc="docs.currency_id.symbol"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="page">
+                            <style type="text/css">
+                                body {
+                                font-family: Arial, sans-serif;
+                                }
+                                table {
+                                border-collapse: collapse;
+                                width: 100%;
+                                }
+                                td, th {
+                                border: 1px solid gray;
+                                text-align: center;
+                                padding: 5px;
+                                }
+                                th {
+                                background-color: #f0f0f0;
+                                }
+                                .highlight-yellow {
+                                background-color: yellow;
+                                }
+
+                                /* Force a page break after every group of 4 employees */
+                                .page {
+                                page-break-inside: avoid;
+                                }
+                            </style>
+
+                            <div style="text-align: center;">
+                                <h3>Livre de paie de la période du
+                                    <t t-esc="data.get('form').get('date_from')"/>
+                                    au
+                                    <t t-esc="data.get('form').get('date_to')"/>
+                                </h3>
+                            </div>
+
+                            <table style="margin-top:20px">
+                                <thead>
+                                    <tr>
+                                        <th>Employé(e)</th>
+                                        <t t-if="docs and len(docs) > 0">
+                                            <t t-foreach="docs[0].line_ids.filtered(lambda l: l.salary_rule_id.appears_on_payslip == True and l.total !=0).mapped('salary_rule_id')" t-as="rule">
+                                                <th t-att-class="rule.name == 'Total Brut' and 'highlight-yellow' or (rule.name == 'Total Brut Imposable' and 'highlight-yellow' or '') or (rule.name == 'Total Retenues' and 'highlight-yellow' or '') or (rule.name == 'Total Charges Patronales' and 'highlight-yellow' or '') or (rule.name == 'Total GAIN' and 'highlight-yellow' or '')">
+                                                    <t t-esc="rule.name"/>
+                                                </th>
+                                            </t>
+                                            
+                                        </t>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <t t-foreach="set(docs.mapped('employee_id'))" t-as="employee">
+                                        <t t-set="total" t-value="0"/>
+                                        <tr>
+                                            <td>
+                                                <t t-esc="employee.name"/>
+                                            </td>
+                                            <t t-foreach="docs[0].line_ids.filtered(lambda l: l.salary_rule_id.appears_on_payslip == True and l.total !=0).mapped('salary_rule_id')" t-as="rule">
+                                                <td t-att-class="rule.name == 'Total Brut' and 'highlight-yellow' or (rule.name == 'Total Brut Imposable' and 'highlight-yellow' or '') or (rule.name == 'Total Retenues' and 'highlight-yellow' or '') or (rule.name == 'Total Charges Patronales' and 'highlight-yellow' or '') or (rule.name == 'Total GAIN' and 'highlight-yellow' or '') or (rule.name == 'Total Non imposable' and 'highlight-yellow' or '')">
+                                                    <span t-esc="int(sum(docs.filtered(lambda l: l.employee_id.id == employee.id).line_ids.filtered(lambda l: l.salary_rule_id == rule).mapped('total')))" t-options="{'widget': 'monetary', 'display_currency': docs.currency_id}"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <tr t-attf-style="background-color: yellow;">
+                                        <td>Total</td>
+                                        <t t-foreach="docs[0].line_ids.filtered(lambda l: l.salary_rule_id.appears_on_payslip == True and l.total !=0).mapped('salary_rule_id')" t-as="rule">
+                                            <td>
+                                                <!-- <span t-esc="int(sum(docs.mapped('line_ids').filtered(lambda l: l.salary_rule_id == rule).mapped('amount')))"/> -->
+                                                <span t-esc="int(sum(docs.mapped('line_ids').filtered(lambda l: l.salary_rule_id == rule).mapped('total')))" t-options="{'widget': 'monetary', 'display_currency': docs.currency_id}"/>
+                                                <span t-esc="docs.currency_id.symbol"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
